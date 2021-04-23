@@ -25,4 +25,6 @@
 </VirtualHost>
 
 ```
-
+### Connexion à l'application
+- On peut se connecter à l'application en tant qu'administrateur avec l'adresse email admin@gmail.com et le
+  mot de passe : 123456

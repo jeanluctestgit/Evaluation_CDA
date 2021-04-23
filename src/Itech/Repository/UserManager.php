@@ -44,13 +44,22 @@ class UserManager
     {
         $statement = $this->db->prepare('
         UPDATE user 
-        SET firstName=:firstName, lastName=:lastName, email=:email, encryptedPassword=:encryptedPassword WHERE id=:id');
+        SET firstName=:firstName, lastName=:lastName, email=:email, role_id=:role_id WHERE id=:id');
         $statement->bindValue('firstName', $user->getFirstName());
             $statement->bindValue('lastName', $user->getLastName());
             $statement->bindValue('email', $user->getEmail());
-            $statement->bindValue('encryptedPassword', $user->getEncryptedPassword());
+            $statement->bindValue('role_id', $user->getRole_id());
         $statement->bindValue(':id', $user->getId());
         $statement->execute();
+    }
+
+    public function deleteUser($id)
+    {
+        $sth =  $this->_db->prepare(
+            'DELETE FROM user WHERE id=:id'
+        );
+        $sth->bindValue(':id', $id);
+        $sth->execute();
     }
 
     public function getUser(User $user){
@@ -64,6 +73,70 @@ class UserManager
 
             $statement->execute();
             return $statement->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $exception) {
+            dd($exception);
+        }
+    }
+
+    public function findUserById($id){
+        try {
+            $statement = $this->db->prepare(
+                "SELECT * FROM `user` WHERE id=:id "
+            );
+            
+            $statement->bindValue('id', $id);
+            
+
+            $statement->execute();
+            return $statement->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $exception) {
+            dd($exception);
+        }
+    }
+
+    public function getUsers(){
+        try {
+            $statement = $this->db->prepare(
+                "SELECT * FROM `user`"
+            );
+            
+            
+            
+
+            $statement->execute();
+            return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $exception) {
+            dd($exception);
+        }
+    }
+
+    public function isAdmin(User $user){
+        try {
+            $statement = $this->db->prepare(
+                "SELECT * FROM `user` LEFT JOIN user_role ON user_role.id = user.role_id WHERE user.id =:id "
+            );
+            
+            $statement->bindValue('id', $user->getId());
+            
+
+            $statement->execute();
+            $result = $statement->fetch(\PDO::FETCH_ASSOC);
+            
+            return $result['role'] === 'admin';
+        } catch (\PDOException $exception) {
+            dd($exception);
+        }
+    }
+
+    public function getRoles(){
+        try {
+            $statement = $this->db->prepare(
+                "SELECT * FROM `user_role` "
+            );
+            
+            $statement->execute();
+            $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            return $result;
         } catch (\PDOException $exception) {
             dd($exception);
         }

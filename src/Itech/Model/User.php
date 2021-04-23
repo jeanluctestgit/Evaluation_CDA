@@ -31,6 +31,8 @@ class User
 
     private string $lastName;
 
+    private $role_id;
+
     /**
      * @return int
      */
@@ -46,6 +48,24 @@ class User
     public function setId(int $id): User
     {
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRole_id(): int
+    {
+        return $this->role_id;
+    }
+
+    /**
+     * @param int $id
+     * @return User
+     */
+    public function setRole_id(int $id): User
+    {
+        $this->role_id = $id;
         return $this;
     }
 

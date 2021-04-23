@@ -18,6 +18,22 @@ $routes->add('security_register', new Routing\Route('/register', [
     '_controller' => 'Itech\Controller\UserController::register',
 ], [], [], '', [], ['GET', 'POST']));
 
+$routes->add('users_management', new Routing\Route('/users', [
+    '_controller' => 'Itech\Controller\UserController::users',
+], [], [], '', [], ['GET', 'POST']));
+
+$routes->add('users_management_delete', new Routing\Route('/users/delete', [
+    '_controller' => 'Itech\Controller\UserController::delete',
+], [], [], '', [], ['GET', 'POST']));
+
+$routes->add('users_management_update', new Routing\Route('/users/update', [
+    '_controller' => 'Itech\Controller\UserController::update',
+], [], [], '', [], ['GET', 'POST']));
+
+$routes->add('users_management_update_user', new Routing\Route('/users/update_user', [
+    '_controller' => 'Itech\Controller\UserController::update_user',
+], [], [], '', [], ['GET', 'POST']));
+
 $routes->add('security_login', new Routing\Route('/login', [
     '_controller' => 'Itech\Controller\UserController::login',
 ], [], [], '', [], ['GET', 'POST']));

@@ -30,6 +30,11 @@
       <li class="nav-item">
     <a  class="nav-link" href="\profile">Profile</a>
       </li>
+      <?php if($_SESSION['security']['isAdmin']): ?>
+      <li class="nav-item">
+    <a  class="nav-link" href="\users">Gestion Utilisateurs</a>
+      </li>
+    <?php endif; ?>
       <li class="nav-item">
     <a  class="nav-link" href="\logout">Logout</a>
       </li>

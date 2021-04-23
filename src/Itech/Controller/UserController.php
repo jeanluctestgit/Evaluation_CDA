@@ -102,8 +102,11 @@ class UserController
                 
                 $_SESSION['security'] = [
                     'user' => (new UserManager())->getUser($user),
-                    'isLoggedIn' => true
+                    'isLoggedIn' => true,
+                    'isAdmin' => (new UserManager())->isAdmin($user)
                 ];
+
+                //dd($_SESSION['security']);
 
                 header('Location: /');
                 exit;
@@ -113,6 +116,80 @@ class UserController
         $templating = new Templating();
         return new Response(
             $templating->render('Itech::login.php', [])
+        );
+    }
+
+    public function users(Request $request): Response
+    {
+        
+        $templating = new Templating();
+        $allUsers = (new UserManager())->getUsers();
+        
+        return new Response(
+            $templating->render('Itech::users.php', ['users' => $allUsers]),
+            Response::HTTP_OK,
+            ['content-type' => 'text/html']
+        );
+    }
+
+    public function update(Request $request):Response
+    {
+        $userData = [];
+        $roles = [];
+        if ($request->getMethod() === Request::METHOD_POST) {
+            //dd($_POST);
+            /** @var User $user */
+            $userid = $_POST['Itech']['User']['id'];
+            $userData = (new UserManager())->findUserById($userid);
+            $roles = (new UserManager())->getRoles();
+            //dd($productData);
+            //$this->productManager->delete($product);
+        }
+        $templating = new Templating();
+        
+        return new Response(
+            $templating->render('Itech::update_user.php', ['user' => $userData , 'roles' => $roles]),
+            Response::HTTP_OK,
+            ['content-type' => 'text/html']
+        );
+    }
+
+    public function update_user(Request $request):Response
+    {
+        $userData = [];
+        $roles = [];
+        if ($request->getMethod() === Request::METHOD_POST) {
+            //dd($_POST);
+            /** @var User $user */
+            $user = Form::handleSubmit($request);
+            
+            (new UserManager())->updateUser($user);
+        }
+        $templating = new Templating();
+        $allUsers = (new UserManager())->getUsers();
+        
+        return new Response(
+            $templating->render('Itech::users.php', ['users' => $allUsers]),
+            Response::HTTP_OK,
+            ['content-type' => 'text/html']
+        );
+    }
+
+    public function delete(Request $request) : Response
+    {
+        if ($request->getMethod() === Request::METHOD_POST) {
+
+            /** @var User $user */
+            $user = Form::handleSubmit($request);
+            
+            (new UserManager())->deleteUser($user->getId());
+        }
+        $templating = new Templating();
+        $allUsers = (new UserManager())->getUsers();
+        return new Response(
+            $templating->render('Itech::users.php', ['users' => $allUsers]),
+            Response::HTTP_OK,
+            ['content-type' => 'text/html']
         );
     }
 

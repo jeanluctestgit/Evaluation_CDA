@@ -46,10 +46,10 @@
 </nav>
     <div class="row">
         <div>
-        <form action="/profile" method="post">
+        <form action="/users/update_user" method="post">
         <div class="mb-3">
                     
-                    <input type="hidden" class="form-control" id="id" name="Itech[User][id]" value=<?= $data['user']['id'] ?> placeholder="John">
+                <input type="hidden" class="form-control" id="id" name="Itech[User][id]" value=<?= $data['user']['id'] ?> placeholder="John">
                 </div>
                 <div class="mb-3">
                     <label for="firstName" class="form-label">First name</label>
@@ -63,10 +63,22 @@
                     <label for="email" class="form-label">Email</label>
                     <input type="email" class="form-control" id="email" name="Itech[User][email]" value=<?= $data['user']['email'] ?> placeholder="john@doe.con">
                 </div>
+
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="Itech[User][password]" placeholder="Paris">
+                    <label for="role" class="form-label">Role</label>
+                    <select class="form-control" id="role" name="Itech[User][role_id]">
+                      <?php foreach ($data['roles'] as $role) : ?>
+                        <option 
+                                <?php if($data['user']['role_id'] === $role['id']) : ?>
+                                  <?php echo ' selected="selected" ' ?>
+                                <?php endif; ?>
+                                value = <?= $role['id'] ?>>
+                                <?= $role['role'] ?>
+                        </option>
+                      <?php endforeach; ?>
+                     </select>
                 </div>
+                
                 <div class="mb-3">
                     <button class="btn btn-primary" type="submit">Submit form</button>
                 </div>
