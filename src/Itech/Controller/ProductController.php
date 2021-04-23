@@ -28,6 +28,10 @@ class ProductController
      */
     public function index(): Response
     {
+        if (!isset($_SESSION) || !isset($_SESSION['security']) || !$_SESSION['security']['isLoggedIn']) {
+            header('Location: /login');
+            exit;
+        }
         $products = $this->productManager->getProducts();
         //dd($products);
         $templating = new Templating();
